@@ -1,0 +1,35 @@
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.example.com
+    paths:
+     - /
+  podLabels:
+    sidecar.istio.io/inject: "true"
+
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - prometheus.example.com
+    paths:
+      - /
+  labels:
+    sidecar.istio.io/inject: "true"
+
+  prometheusSpec:
+    podMetadata:
+      labels:
+        sidecar.istio.io/inject: "true"
+
+alertmanager:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - alertmanager.example.com
+    paths:
+     - /

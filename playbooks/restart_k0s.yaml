@@ -1,0 +1,10 @@
+---
+- name: Restart K0s on all nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Stop K0s service
+      shell: k0s stop
+
+    - name: Start K0s service
+      shell: k0s start

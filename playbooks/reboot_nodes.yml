@@ -1,0 +1,8 @@
+---
+- name: Reboot all nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Reboot the nodes
+      shell: shutdown -r now
+

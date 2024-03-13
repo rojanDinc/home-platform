@@ -1,0 +1,18 @@
+---
+- name: Create registry mirror cri config
+  hosts: all
+  tasks:
+    - name: Get the LoadBalancer IP of the registry
+      ansible.builtin.shell: "kubectl get svc -n devops registry-docker-registry -ojsonpath='{.status.loadBalancer.ingress[0].ip}'"
+      register: registry_ip
+      delegate_to: localhost
+
+    - name: Add containerd config
+      ansible.builtin.copy:
+        dest: /etc/k0s/containerd.d/registry.toml
+        content: |
+          [plugins."io.containerd.grpc.v1.cri".registry.configs."{{ registry_ip.stdout }}:5000".tls]
+                insecure_skip_verify = true
+          [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry-docker-registry:5000"]
+                endpoint = ["http://{{ registry_ip.stdout }}:5000"]
+    - debug: msg="{{ registry_ip.stdout }}"

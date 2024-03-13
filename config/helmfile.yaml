@@ -1,0 +1,97 @@
+helmDefaults:
+  kubeContext: home-cluster
+
+repositories:
+- name: prometheus-community
+  url: https://prometheus-community.github.io/helm-charts
+- name: ingress-nginx
+  url: https://kubernetes.github.io/ingress-nginx
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+- name: twuni
+  url: https://helm.twun.io
+- name: ngrok
+  url: https://ngrok.github.io/kubernetes-ingress-controller
+- name: woodpecker
+  url: https://woodpecker-ci.org
+- name: jetstack
+  url: https://charts.jetstack.io
+
+
+releases:
+  - name: kube-prometheus-stack
+    chart: prometheus-community/kube-prometheus-stack
+    namespace: monitoring
+    version: "56.21.4"
+    values:
+      - "./prometheus/values.yaml"
+  - name: metallb
+    chart: bitnami/metallb
+    namespace: routing
+    version: "4.16.1"
+    values:
+      - frr:
+          enabled: false
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          - "apply"
+          - "-f"
+          - "./extra/metallb"
+          - "--context"
+          - "{{`{{.Environment.KubeContext}}`}}"
+  - name: postgres
+    chart: bitnami/postgresql
+    namespace: apps
+    version: "14.3.1"
+    secrets:
+      - "./postgres/secret.yaml"
+  - name: registry
+    chart: twuni/docker-registry
+    namespace: devops
+    version: "2.2.2"
+    values:
+      - "./registry/values.yaml"
+  - name: ngrok
+    chart: ngrok/kubernetes-ingress-controller
+    namespace: routing
+    version: "0.12.2"
+    secrets:
+      - "./ngrok/secret.yaml"
+  - name: nginx
+    chart: ingress-nginx/ingress-nginx
+    namespace: routing
+    version: "4.10.0"
+  - name: woodpecker
+    chart: woodpecker/woodpecker
+    namespace: devops
+    version: "1.2.0"
+    values:
+      - "./woodpecker/values.yaml"
+    secrets:
+      - "./woodpecker/secret.yaml"
+  - name: cert-manager
+    chart: jetstack/cert-manager
+    namespace: cert-manager
+    version: "1.14.4"
+    hooks:
+      - events: ["presync"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          - "apply"
+          - "-f"
+          - "./extra/cert-manager/cert-manager-crd.yaml"
+          - "--context"
+          - "{{`{{.Environment.KubeContext}}`}}"
+      - events: ["postsync"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          - "apply"
+          - "-f"
+          - "./extra/cert-manager/selfsigned-cluster-issuer.yaml"
+          - "--context"
+          - "{{`{{.Environment.KubeContext}}`}}"

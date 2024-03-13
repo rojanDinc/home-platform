@@ -1,0 +1,36 @@
+apiVersion: k0sctl.k0sproject.io/v1beta1
+kind: Cluster
+metadata:
+  name: home-cluster
+spec:
+  hosts:
+  - ssh:
+      address: 192.168.1.115
+      user: root
+      port: 22
+      keyPath: ~/.ssh/id_ed25519.pub
+    role: controller+worker
+    noTaints: true
+  - ssh:
+      address: 192.168.1.238
+      user: root
+      port: 22
+      keyPath: ~/.ssh/id_ed25519.pub
+    role: worker
+  - ssh:
+      address: 192.168.1.123
+      user: root
+      port: 22
+      keyPath: ~/.ssh/id_ed25519.pub
+    role: worker
+  k0s:
+    version: v1.29.2+k0s.0
+    versionChannel: stable
+    dynamicConfig: true
+    config:
+      spec:
+        telemetry:
+          enabled: false
+        extensions:
+          storage:
+            type: openebs_local_storage

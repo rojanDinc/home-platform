@@ -1,0 +1,8 @@
+prometheusRule:
+  enabled: true
+controller:
+  metrics:
+    enabled: true
+speaker:
+  metrics:
+    enabled: true

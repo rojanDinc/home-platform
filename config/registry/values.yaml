@@ -1,0 +1,10 @@
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - registry.example.com
+service:
+  type: LoadBalancer
+persistence:
+  enabled: true
+  size: 50Gi

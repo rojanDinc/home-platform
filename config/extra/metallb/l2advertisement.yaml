@@ -1,0 +1,8 @@
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: local
+  namespace: routing
+spec:
+  ipAddressPools:
+  - address-pool-1
