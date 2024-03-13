@@ -30,8 +30,9 @@ after which, your Kubernetes cluster should be ready to use.
 Run the following command to get a kubeconfig and save it to a file:
 
 ```bash
-k0sctl kubeconfig -c <path_to_k0s_config>
+make kubeconfig > config.yaml
 ```
+place the `config.yaml` file in your `.kube` directory.
 
 **Add containerd config for nodes**:
 For the kubelet to be able to pull image from our private registry, we need to add containerd mirror config to each node. Make sure that you've configured the ansible [inventory](https://github.com/rojanDinc/home-platform/blob/main/playbooks/inventory) with the correct node IPs. Run the following command:

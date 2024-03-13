@@ -12,3 +12,6 @@ sync-charts:
 
 add-registry-config:
 	ansible-playbook -i playbooks/inventory playbooks/add_containerd_config.yaml
+
+kubeconfig:
+	@k0sctl kubeconfig -c ./k0s/config.yaml
