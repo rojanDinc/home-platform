@@ -5,7 +5,7 @@ agent:
     WOODPECKER_MAX_WORKFLOWS: 3
 server:
   env:
-    WOODPECKER_GITEA: true
+    WOODPECKER_GITHUB: true
     WOODPECKER_OPEN: true
     WOODPECKER_AUTHENTICATE_PUBLIC_REPOS: true
   ingress:
