@@ -51,3 +51,5 @@ Now the last step is to deploy the charts. Run the following command:
 ```bash
 make apply-charts
 ```
+
+**Note** that some of the charts value files are encrypted. You would have to replace these files with your own values.
