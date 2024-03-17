@@ -16,6 +16,8 @@ repositories:
   url: https://woodpecker-ci.org
 - name: jetstack
   url: https://charts.jetstack.io
+- name: mojo2600
+  url: https://mojo2600.github.io/pihole-kubernetes/
 
 
 releases:
@@ -97,3 +99,9 @@ releases:
           - "./extra/cert-manager/selfsigned-cluster-issuer.yaml"
           - "--context"
           - "{{`{{.Environment.KubeContext}}`}}"
+  - name: pihole
+    chart: mojo2600/pihole
+    namespace: apps
+    version: "2.22.0"
+    values:
+      - "./pihole/values.yaml"
