@@ -4,9 +4,14 @@ steps:
     commands:
       - apt update
       - apt install make
-      - echo $PGP_KEY | gpg --import
       - make apply-charts-dry-run
-    secrets: [pgp_key]
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: aws_access_key
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: aws_secret_key
+      SOPS_KMS_ARN:
+        from_secret: sops_kms_arn
     when:
       - event: [pull_request, push]
   - name: apply
@@ -14,9 +19,14 @@ steps:
     commands:
       - apt update
       - apt install make
-      - echo $PGP_KEY | gpg --import
       - make apply-charts
-    secrets: [pgp_key]
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: aws_access_key
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: aws_secret_key
+      SOPS_KMS_ARN:
+        from_secret: sops_kms_arn
     when:
       - event: push
         branch: main
