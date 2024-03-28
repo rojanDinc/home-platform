@@ -19,12 +19,10 @@ steps:
       - apt install make
       - make apply-charts
     environment:
-      AWS_ACCESS_KEY_ID:
-        from_secret: aws_access_key
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: aws_secret_key
-      SOPS_KMS_ARN:
-        from_secret: sops_kms_arn
+      AWS_ACCESS_KEY_ID: "${aws_access_key}"
+      AWS_SECRET_ACCESS_KEY: "${aws_secret_key}"
+      SOPS_KMS_ARN: "${sops_kms_arn}"
+    secrets: [aws_access_key, aws_secret_key, sops_kms_arn]
     when:
       - event: push
         branch: main
