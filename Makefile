@@ -7,6 +7,9 @@ apply-dry-run:
 apply-charts:
 	helmfile apply -f ./config/helmfile.yaml
 
+apply-charts-dry-run:
+	helmfile diff -f ./config/helmfile.yaml
+
 sync-charts:
 	helmfile sync -f ./config/helmfile.yaml
 

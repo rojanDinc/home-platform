@@ -1,0 +1,29 @@
+steps:
+  - name: dry-run
+    image: ghcr.io/helmfile/helmfile-debian-stable-slim:v0.163.1
+    commands:
+      - apt update
+      - apt install make
+      - make apply-charts-dry-run
+    environment:
+      AWS_ACCESS_KEY_ID: "${aws_access_key}"
+      AWS_SECRET_ACCESS_KEY: "${aws_secret_key}"
+      SOPS_KMS_ARN: "${sops_kms_arn}"
+    secrets: [aws_access_key, aws_secret_key, sops_kms_arn]
+    when:
+      - event: [pull_request, push]
+  - name: apply
+    image: ghcr.io/helmfile/helmfile-debian-stable-slim:v0.163.1
+    commands:
+      - apt update
+      - apt install make
+      - make apply-charts
+    environment:
+      AWS_ACCESS_KEY_ID: "${aws_access_key}"
+      AWS_SECRET_ACCESS_KEY: "${aws_secret_key}"
+      SOPS_KMS_ARN: "${sops_kms_arn}"
+    secrets: [aws_access_key, aws_secret_key, sops_kms_arn]
+    when:
+      - event: push
+        branch: main
+
