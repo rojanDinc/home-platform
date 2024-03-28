@@ -1,12 +1,12 @@
 steps:
   - name: dry-run
-    image: ghcr.io/helmfile/helmfile:v0.163.0
+    image: ghcr.io/helmfile/helmfile-debian-stable-slim:v0.163.1
     commands:
       - make apply-dry-run
     when:
       - event: [pull_request, push]
   - name: apply
-    image: ghcr.io/helmfile/helmfile:v0.163.0
+    image: ghcr.io/helmfile/helmfile-debian-stable-slim:v0.163.1
     commands:
       - make apply-charts
     when:
