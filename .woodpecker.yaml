@@ -1,0 +1,15 @@
+steps:
+  - name: dry-run
+    image: ghcr.io/helmfile/helmfile:v0.163.0
+    commands:
+      - make apply-dry-run
+    when:
+      - event: [pull_request, push]
+  - name: apply
+    image: ghcr.io/helmfile/helmfile:v0.163.0
+    commands:
+      - make apply-charts
+    when:
+      - event: push
+        branch: main
+
