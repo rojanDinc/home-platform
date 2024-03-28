@@ -4,7 +4,7 @@ steps:
     commands:
       - apt update
       - apt install make
-      - make apply-dry-run
+      - make apply-charts-dry-run
     when:
       - event: [pull_request, push]
   - name: apply
